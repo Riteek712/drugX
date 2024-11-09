@@ -1,3 +1,4 @@
+import Index from "@/components/Dashboard";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { Metadata } from "next";
 
@@ -10,6 +11,7 @@ export default function Home() {
     <>
       <DefaultLayout>
         <p>Hello ! this is Dashboard page</p>
+        <Index/>
       </DefaultLayout>
     </>
   );
