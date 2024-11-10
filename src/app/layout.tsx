@@ -21,7 +21,7 @@ export default function RootLayout({
   }, []);
 
   const client = new Ably.Realtime({
-    key: process.env.ABLY_API_KEY,
+    key: "DuxXcA.7s1y4A:1h6gvtXHUQWXARfEIwjYxZHn8KZ4rXnOkpN1xitYvWg",
   });
   return (
     <html lang="en">
