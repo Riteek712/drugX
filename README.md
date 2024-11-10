@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/-NVIDIA_NIM-black?style=for-the-badge&logoColor=white&logo=nvidia&color=76B900" alt="nvidia-neMo" />
   </div>
  <br />
-  ![Project Screenshot](Screenshot.png)
+   <img src="Screenshot.png" alt="screenshot" />
 </div>
 
 
