@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ComponentHeader from "@/components/ComponentHeader/ComponentHeader";
@@ -27,6 +27,34 @@ const SignUp: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isClient, setIsClient] = useState(false); // New state to track client-only rendering
+
+  useEffect(() => {
+    // Set to true once the component is mounted on the client
+    setIsClient(true);
+
+    const loadImageFile = async () => {
+      try {
+        const response = await fetch('/images/user/dummyuser.png');
+        const blob = await response.blob();
+        const file = new File([blob], 'dummyuser.png', { type: blob.type });
+        setImageFile(file);
+      } catch (error) {
+        console.error('Error loading image file:', error);
+      }
+    };
+
+    // Load the image file if on the client side
+    if (isClient) {
+      loadImageFile();
+    }
+  }, [isClient]);
+
+  if (!isClient) {
+    // Render null on the server to avoid mismatch
+    return null;
+  }
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -34,7 +62,7 @@ const SignUp: React.FC = () => {
     const { name, value } = e.target;
     setUser((prev) => ({
       ...prev,
-      [name]: value, // Ensure the value is treated as a string
+      [name]: value,
     }));
   };
 
@@ -57,7 +85,7 @@ const SignUp: React.FC = () => {
   };
 
   // Validate form fields
-  const validateForm = useCallback(() => {
+  const validateForm = useCallback(async () => {
     if (
       !user.email ||
       !user.firstName ||
@@ -69,9 +97,6 @@ const SignUp: React.FC = () => {
     }
     if (user.password !== user.confirmPassword) {
       return "Passwords do not match.";
-    }
-    if (!imageFile) {
-      return "Please upload a profile picture.";
     }
     return null;
   }, [user, imageFile]);
@@ -85,7 +110,7 @@ const SignUp: React.FC = () => {
 
     setIsLoading(true);
 
-    const formError = validateForm();
+    const formError = await validateForm();
     if (formError) {
       setErrors(formError);
       setIsLoading(false);
@@ -108,6 +133,7 @@ const SignUp: React.FC = () => {
 
       console.log(newUser);
       const createdUser = await createUser(newUser);
+      alert("Profile created! Please move ahead and Sign-in!!")
       console.log(createdUser);
 
       setUser({
@@ -395,7 +421,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <textarea
-                      name="bio"
+                      name="userBio"
                       value={user.userBio}
                       onChange={handleInputChange}
                       placeholder="Enter your bio"

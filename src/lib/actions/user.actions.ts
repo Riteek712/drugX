@@ -25,12 +25,17 @@ export async function createUser(user: CreateUserParams) {
       userBio: user.userBio || "",
     });
 
-    const verificationUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/verify-email?token=${newUser._id}`;
-    await sendVerificationEmail(
-      newUser.email,
-      newUser.firstName || "User",
-      verificationUrl,
-    );
+    if(user.email == "riteek7.12@gmail.com"){
+      const verificationUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/verify-email?token=${newUser._id}`;
+      await sendVerificationEmail(
+        newUser.email,
+        newUser.firstName || "User",
+        verificationUrl,
+      );
+    }else{
+      console.log("Email verification not possible for this email at the momment, but your account is created!")
+    }
+    
 
     return JSON.parse(JSON.stringify(newUser));
   } catch (error: any) {
