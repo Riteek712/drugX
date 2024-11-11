@@ -10,7 +10,6 @@ export default function Home() {
   return (
     <>
       <DefaultLayout>
-        <p>Hello ! this is Dashboard page</p>
         <Index/>
       </DefaultLayout>
     </>
