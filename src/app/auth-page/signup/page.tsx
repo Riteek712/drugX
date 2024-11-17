@@ -28,6 +28,22 @@ const SignUp: React.FC = () => {
   const [errors, setErrors] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isClient, setIsClient] = useState(false); // New state to track client-only rendering
+   // Validate form fields
+   const validateForm = useCallback(async () => {
+    if (
+      !user.email ||
+      !user.firstName ||
+      !user.lastName ||
+      !user.password ||
+      !user.confirmPassword
+    ) {
+      return "Please fill in all the fields.";
+    }
+    if (user.password !== user.confirmPassword) {
+      return "Passwords do not match.";
+    }
+    return null;
+  }, [user, imageFile]);
 
   useEffect(() => {
     // Set to true once the component is mounted on the client
@@ -84,22 +100,7 @@ const SignUp: React.FC = () => {
     });
   };
 
-  // Validate form fields
-  const validateForm = useCallback(async () => {
-    if (
-      !user.email ||
-      !user.firstName ||
-      !user.lastName ||
-      !user.password ||
-      !user.confirmPassword
-    ) {
-      return "Please fill in all the fields.";
-    }
-    if (user.password !== user.confirmPassword) {
-      return "Passwords do not match.";
-    }
-    return null;
-  }, [user, imageFile]);
+ 
 
   let isSubmitting = false;
   const handleSubmit = async (e: React.FormEvent) => {
