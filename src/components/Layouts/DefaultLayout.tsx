@@ -23,7 +23,7 @@ export default function DefaultLayout({
         "/auth-page/signup",
         "/verify-email",
         "/reset-password",
-        "/forgot-password",
+        "/forget-password",
     ]
     useLayoutEffect(()=>{
         if(status === 'unauthenticated' && !publicRoutes.includes(pathname)){
